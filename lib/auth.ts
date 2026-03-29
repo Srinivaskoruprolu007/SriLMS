@@ -22,7 +22,8 @@ export const auth = betterAuth({
   secret,
   database: prismaAdapter(prisma, {
     provider: "postgresql",
-    // transaction: true,
+    // transaction: true, // Disabled transactions as @prisma/adapter-pg does not fully support transactional operations
+    // in serverless/edge environments
   }),
   emailAndPassword: {
     enabled: true,

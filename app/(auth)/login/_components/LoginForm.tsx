@@ -17,6 +17,7 @@ import { Github, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
+import { string } from "zod";
 
 const LoginForm = () => {
   const [githubPending, startGithubTransition] = useTransition();
@@ -38,7 +39,7 @@ const LoginForm = () => {
       });
     });
   }
-  const HandleLogin = async () => {
+  const handleLogin = async () => {
     try {
       const response = await authClient.signIn.email({
         email,
@@ -56,16 +57,15 @@ const LoginForm = () => {
     }
   };
 
-  const HandleSignUp = async () => {
+  const handleSignUp = async () => {
     try {
       const res = await authClient.signUp.email({
         name,
         email,
         password,
       });
-      console.log("this res at signup", res);
       if (res.error) {
-        setError(error?.message);
+        setError(res.error?.message);
       } else {
         router.push("/");
       }
@@ -103,7 +103,7 @@ const LoginForm = () => {
             <CardTitle>Welcome Back</CardTitle>
             <CardDescription>Sign in to your account</CardDescription>
           </CardHeader>
-          {error && <p>{error}</p>}
+          {error && <p className="text-red-500 text-xl">{error}</p>}
           <CardContent className="grid gap-4">
             <Button
               onClick={signInWithGithub}
@@ -155,7 +155,7 @@ const LoginForm = () => {
             <Button
               className={"w-full"}
               variant={"default"}
-              onClick={HandleLogin}
+              onClick={handleLogin}
             >
               Sign in
             </Button>
@@ -168,7 +168,7 @@ const LoginForm = () => {
             <CardTitle>Sign Up</CardTitle>
             <CardDescription>sign up your account</CardDescription>
           </CardHeader>
-          {error && <p>{error}</p>}
+          {error && <p className="text-red-500 text-xl">{error}</p>}
           <CardContent>
             <div>
               <div className="grid gap-2">
@@ -208,7 +208,7 @@ const LoginForm = () => {
                 <Button
                   variant={"default"}
                   className={"w-full"}
-                  onClick={HandleSignUp}
+                  onClick={handleSignUp}
                 >
                   Sign Up
                 </Button>
