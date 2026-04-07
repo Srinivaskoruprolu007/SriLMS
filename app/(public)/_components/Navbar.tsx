@@ -5,6 +5,7 @@ import { navigationItems } from "@/constants/constants";
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
+import UserDropdown from "./UserDropdown";
 
 export function Navbar() {
 	const { data: session, isPending } = authClient.useSession();
@@ -31,7 +32,7 @@ export function Navbar() {
 					<div className="flex items-center space-x-4">
 						<ThemeToggler />
 						{isPending ? null : session ? (
-							<p>Signed in as {session.user.name}</p>
+							<UserDropdown user={session.user} />
 						) : (
 							<Link
 								href="/login"
